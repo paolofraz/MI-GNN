@@ -1,0 +1,10 @@
+**/data_dir/
+run/datasets/
+run/configs/
+run/results/
+run/grids/
+**/__pycache__/
+**/.ipynb_checkpoints
+.idea/
+
+!run/configs/RAY

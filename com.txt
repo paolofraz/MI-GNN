@@ -1,0 +1,3 @@
+srun -N 1 -n 1 --mem=32G -p allgroups --time=4:00:00 --exclusive  --pty bash -i
+python configs_gen.py --config configs/SVD/svd_reservoir_mr_mi.yaml --grid grids/SVD/first.txt --out_dir configs/SVD
+find /home/frazzetp/MI-GNN/GraphGym/run/configs/SVD/svd_reservoir_mr_mi_grid_first/ -type f -name "*.yaml" > ../../SLURM/SVD/svd_reservoir_mr_mi_grid_first.txt

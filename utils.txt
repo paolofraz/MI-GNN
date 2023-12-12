@@ -1,0 +1,27 @@
+# Find and rename everything from IMDB-B to IMDB_B
+find results/v1_grid_v1_skipconcat/  -depth -name '*IMDB-B*' -execdir rename 's/IMDB-B/IMDB_B/g' -v  "{}" \;
+
+# Count directories
+find /home/frazzetp/MI-GNN/GraphGym/run/results/v3_grid_v3/ -maxdepth 1 -type d -print0 | tr -dc '\0' | wc -c
+
+# Get yamls
+find /home/frazzetp/MI-GNN/GraphGym/run/configs/baseline_graph_grid_first_newdata -type f -name "*.yaml"
+
+# Array
+scontrol update ArrayTaskThrottle=<count> JobId=<jobID>
+
+# Relpace weight decay in file name, removing the "-"
+for file in *5e-05*; do mv "$file" "${file//5e-05/5ex5}"; done
+
+find /path/to/parent/directory -type d -links +1 -exec bash -c 'shopt -s nullglob; set -- "$1"/*; (( ${#} < 3 ))' _ {} \; -print -exec rm -r {} \;
+
+find /path/to/parent/directory -type d -maxdepth 1 -exec sh -c 'if [ $(ls -d -1 "$0"/*/ | wc -l) -lt 3 ]; then echo "$0"; fi' {} \; | xargs rm -r
+
+rsync -rav --remove-source-files OLD/ ../../../../storage/MIGNN/OLD/
+
+# Run interactive sesison
+srun -N 1 -n 1 -c 16 -p allgroups --time=2:00:00 --exclusive  --pty bash -i
+
+# Run Ray
+python ray_launch.py --exp-name test_NCI --command "python -u main_ray.py --cfg home/frazzzetp/MI-GNN/GraphGym/run/configs/SVD/ray_svd_res_mr_mi_NCI.yaml" -g 1 -n 4
+
